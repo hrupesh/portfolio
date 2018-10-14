@@ -1,0 +1,435 @@
+$primarycolor: rgba(53, 53, 53, 0.795);
+$secondarycolor: rgb(241, 57, 57);
+$show-home: true;
+$home-image: url(../img/bghome.jpg);
+$background-opacity:0.6;
+@mixin mediamd {
+    @media screen and (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin easeOut {
+    transition: all 0.5s ease-in-out;
+    &:hover {
+        color: $secondarycolor;
+        text-shadow: 0 0 60px rgb(253, 3, 3), -10px 0 80px rgb(255, 57, 50), 10px 0 80px rgba(255, 0, 0, 0.4);
+        transition: all 0.5s ease-out;
+    }
+}
+
+@function settextcolor($color) {
+    @if(lightness($color)>40) {
+        @return #000;
+    }
+    @else {
+        @return #fff;
+    }
+}
+
+@mixin background {
+    @if $show-home {
+        &#bg-img {
+            background: $home-image;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        &:after {
+            content: '';
+            position: fixed;
+            z-index: -1;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba($primarycolor, $background-opacity);
+        }
+    }
+}
+
+.rspan {
+    font-size: 2rem;
+}
+
+.menu-btn {
+    position: absolute;
+    z-index: 3;
+    right: 30px;
+    top: 30px;
+    cursor: pointer;
+    @include easeOut;
+    .btn-line {
+        height: 5px;
+        width: 40px;
+        margin: 0 0 10px 0;
+        background: $secondarycolor;
+        @include easeOut;
+    }
+    &.close {
+        transform: rotate(360deg);
+        .btn-line {
+            &:nth-child(1) {
+                transform: rotate(45deg) translate(15px, 15px);
+            }
+            &:nth-child(2) {
+                @include easeOut;
+                opacity: 0;
+            }
+            &:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+        }
+    }
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    opacity: 0.9;
+    visibility: hidden;
+    &.show {
+        visibility: visible;
+    }
+    &-branding,
+    &-nav {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        justify-content: center;
+        float: left;
+        width: 50%;
+        height: 100vh;
+        overflow: hidden;
+    }
+    &-nav {
+        margin: 0;
+        padding: 0;
+        background: darken($primarycolor, 10);
+        list-style: none;
+        transform: translate3d(100%, -100%, 0);
+        @include easeOut;
+        &.show {
+            transform: translate3d(0, 0, 0);
+            @include easeOut;
+        }
+    }
+    &-branding {
+        background: darken($primarycolor, 10);
+        transform: translate3d(-100%, 100%, 0);
+        @include easeOut;
+        &.show {
+            transform: translate3d(0, 0, 0);
+            @include easeOut;
+        }
+        .portrait {
+            width: 250px;
+            height: 250px;
+            background: url('../img/pic.png');
+            background-size: cover;
+            border-radius: 50%;
+            border: solid 5px $secondarycolor;
+        }
+    }
+    .nav-item {
+        transform: translate3d(600px, -0, 0) rotate(270deg);
+        @include easeOut;
+        &.show {
+            transform: translate3d(0, 0, 0);
+        }
+        .current {
+            color: darken($secondarycolor, 5);
+        }
+    }
+    .nav-link {
+        display: inline-block;
+        position: relative;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        padding: 1rem 0;
+        text-shadow: none;
+        font-weight: 500;
+        color: settextcolor($primarycolor);
+        text-decoration: none;
+        @include easeOut;
+    }
+}
+
+@for $x from 1 through 4 {
+    .nav-item:nth-child(#{$x}) {
+        transition-delay: $x*0.15s;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    @include background;
+    background: $primarycolor;
+    color: settextcolor($primarycolor);
+    height: 100%;
+    margin: 0;
+    font-family: poppins, 'sans-serif';
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    z-index: 2;
+    font-weight: 700;
+    &.lg-heading {
+        z-index: 2;
+        font-size: 4rem;
+    }
+    &.sm-heading {
+        z-index: 2;
+        margin-bottom: 2rem;
+        padding: 0.2rem 1rem;
+        background: rgba(lighten($primarycolor, 50), 0.4);
+        color: settextcolor($primarycolor);
+    }
+}
+
+a {
+    text-decoration: none;
+    i {
+        color: settextcolor($primarycolor);
+        text-decoration: none;
+        @include easeOut;
+    }
+}
+
+header {
+    position: fixed;
+    z-index: 3;
+    width: 100%;
+}
+
+.text-secondary {
+    color: $secondarycolor;
+}
+
+main {
+    padding: 3.8rem;
+    z-index: 3;
+    height: calc(100% - 60px);
+    .icons {
+        margin-top: 2rem;
+        a {
+            padding: 1rem;
+        }
+    }
+    &#home {
+        overflow: none;
+        margin-top: 15vh;
+    }
+}
+
+@mixin mediasm {
+    @media screen and (max-width: 600px) {
+        @content;
+    }
+}
+
+@mixin medialg {
+    @media screen and (min-width: 769px) and (max-width: 1170px) {
+        @content;
+    }
+}
+
+@mixin mediaXL {
+    @media screen and (max-width: 1170px) {
+        @content;
+    }
+}
+
+@include mediasm {
+    ul li {
+        font-size: 0.5rem !important;
+    }
+    main {
+        align-items: center;
+        text-align: center;
+        .lg-heading {
+            font-size: 2.5rem;
+        }
+        .sm-heading {
+            font-size: 3.5vh;
+        }
+        .icons>a {
+            padding: 0px;
+        }
+    }
+    .about-info {
+        .bio-image {
+            margin: 0;
+        }
+    }
+    div.projects {
+        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@include mediamd {
+    .about-info {
+        grid-template: "bioimage" "bio" "job1" "job2" "job3" / 1fr !important;
+    }
+    .rspan {
+        font-size: 1rem;
+    }
+    ul li {
+        font-size: 1rem !important;
+        letter-spacing: 0px !important;
+    }
+    main {
+        align-items: center;
+        text-align: center;
+        .lg-heading {
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+    }
+    .menu-branding,
+    .menu-nav {
+        float: none;
+        width: 100%;
+        min-height: 0;
+        &.show {
+            transform: translate3d(0, 0, 0);
+            @include easeOut;
+        }
+    }
+    .menu-branding {
+        height: 40vh;
+        transform: translate3d(-100%, 0, 0);
+        .portrait {
+            border: solid 3px $secondarycolor;
+            height: 150px;
+            width: 150px;
+        }
+    }
+    .menu-nav {
+        height: 60vh;
+        transform: translate3d(100%, 0, 0);
+    }
+    .projects {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+@include medialg {}
+
+@include mediaXL {}
+
+.bio-image {
+    grid-area: bioimage;
+    width: 250px;
+    height: 250px;
+    margin-left: 3rem;
+    margin-bottom: 2rem;
+    background-size: cover;
+    border-radius: 50%;
+    border: solid 5px $secondarycolor;
+}
+
+.bio {
+    grid-area: bio;
+    font-size: 1rem;
+}
+
+.about-info {
+    display: grid;
+    grid-gap: 40px;
+    grid-template: "bioimage bio bio" "job1 job2 job3" / 1fr 1fr 1fr;
+}
+
+.job-1 {
+    grid-area: job1;
+}
+
+.job-2 {
+    grid-area: job2;
+}
+
+.job-3 {
+    grid-area: job3;
+}
+
+.job {
+    background: lighten($primarycolor, 1);
+    padding: 0.5rem;
+    border-bottom: solid 5px $secondarycolor;
+    h3 {
+        color: darken($secondarycolor, 2);
+        text-align: center;
+        margin: 1rem;
+    }
+    p {
+        text-align: center;
+        padding: 1rem;
+    }
+}
+
+.projects {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 1fr 1fr 1fr;
+    img {
+        width: 100%;
+        height: 250px;
+        border: 5px solid $primarycolor;
+        &:hover {
+            border: 5px solid $secondarycolor;
+            transform: scale(1.5);
+            @include easeOut;
+        }
+    }
+}
+
+.boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.btn {
+    display: block;
+    padding: 0.5rem;
+    border: 0;
+    border-radius: 5%;
+    margin-bottom: 0.5rem;
+    &:hover {
+        @include easeOut;
+        border: solid 1px $secondarycolor;
+    }
+}
+
+.btn-light {
+    @extend .btn;
+    background: lighten($primarycolor, 10);
+    color: rgb(255, 217, 0);
+}
+
+.btn-dark {
+    @extend .btn;
+    background: darken($primarycolor, 10);
+}
+
+#main-footer {
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    color: settextcolor($primarycolor);
+    background: darken($primarycolor, 20);
+    height: 60px;
+}
